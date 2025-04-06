@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchNewsWithFallback } from '@/lib/scrapers/newsApi';
+import { fetchNewsWithFallback } from '@/app/lib/scrapers/newsApi';
 
 // Set revalidation time to refresh the data every hour
 export const revalidate = 3600;

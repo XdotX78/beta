@@ -299,7 +299,8 @@ async function generateSampleNews() {
                 lat: 38.8951,
                 lng: -77.0364
             },
-            type: "economy",
+            category: "economy",
+            showOnMap: true,
             region: "north_america"
         },
         {
@@ -313,7 +314,8 @@ async function generateSampleNews() {
                 lat: 50.8503,
                 lng: 4.3517
             },
-            type: "economy",
+            category: "economy",
+            showOnMap: true,
             region: "western_europe"
         },
         {
@@ -327,7 +329,8 @@ async function generateSampleNews() {
                 lat: 39.9042,
                 lng: 116.4074
             },
-            type: "economy",
+            category: "economy",
+            showOnMap: true,
             region: "east_asia"
         },
 
@@ -343,7 +346,8 @@ async function generateSampleNews() {
                 lat: 49.4871,
                 lng: 31.2718
             },
-            type: "conflict",
+            category: "wars",
+            showOnMap: true,
             region: "eastern_europe"
         },
         {
@@ -357,7 +361,8 @@ async function generateSampleNews() {
                 lat: 55.7558,
                 lng: 37.6173
             },
-            type: "conflict",
+            category: "wars",
+            showOnMap: true,
             region: "eastern_europe"
         },
 
@@ -373,7 +378,8 @@ async function generateSampleNews() {
                 lat: 31.5017,
                 lng: 34.4668
             },
-            type: "conflict",
+            category: "wars",
+            showOnMap: true,
             region: "middle_east"
         },
         {
@@ -387,7 +393,8 @@ async function generateSampleNews() {
                 lat: 31.5017,
                 lng: 34.4668
             },
-            type: "conflict",
+            category: "wars",
+            showOnMap: true,
             region: "middle_east"
         },
         {
@@ -401,7 +408,8 @@ async function generateSampleNews() {
                 lat: 31.9474,
                 lng: 35.3027
             },
-            type: "conflict",
+            category: "wars",
+            showOnMap: true,
             region: "middle_east"
         },
 
@@ -417,7 +425,8 @@ async function generateSampleNews() {
                 lat: 23.6978,
                 lng: 120.9605
             },
-            type: "conflict",
+            category: "wars",
+            showOnMap: true,
             region: "east_asia"
         },
         {
@@ -431,7 +440,8 @@ async function generateSampleNews() {
                 lat: 24.4801,
                 lng: 118.3737
             },
-            type: "conflict",
+            category: "wars",
+            showOnMap: true,
             region: "east_asia"
         },
 
@@ -447,7 +457,8 @@ async function generateSampleNews() {
                 lat: 38.9072,
                 lng: -77.0369
             },
-            type: "politics",
+            category: "world-politics",
+            showOnMap: true,
             region: "north_america"
         },
         {
@@ -461,7 +472,8 @@ async function generateSampleNews() {
                 lat: 51.4975,
                 lng: -0.1357
             },
-            type: "politics",
+            category: "world-politics",
+            showOnMap: true,
             region: "western_europe"
         },
 
@@ -477,7 +489,8 @@ async function generateSampleNews() {
                 lat: 14.5995,
                 lng: 120.9842
             },
-            type: "disaster",
+            category: "disaster",
+            showOnMap: true,
             region: "southeast_asia"
         },
         {
@@ -491,7 +504,8 @@ async function generateSampleNews() {
                 lat: 38.9637,
                 lng: 35.2433
             },
-            type: "disaster",
+            category: "disaster",
+            showOnMap: true,
             region: "middle_east"
         },
 
@@ -507,7 +521,8 @@ async function generateSampleNews() {
                 lat: 19.7633,
                 lng: 96.0785
             },
-            type: "conflict",
+            category: "wars",
+            showOnMap: true,
             region: "southeast_asia"
         }
     ];

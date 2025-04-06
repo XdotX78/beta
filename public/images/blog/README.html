@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Blog Images</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #5a3b8c;
+            border-bottom: 2px solid #8a68c9;
+            padding-bottom: 10px;
+        }
+        .image-container {
+            margin: 30px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .description {
+            background-color: white;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+        }
+        code {
+            background-color: #f0edf7;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #6747a3;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mystery Blog Images</h1>
+    
+    <p>This page displays the SVG files created for the Mystery Blog header. For production use, these should be converted to PNG or JPG files for better browser compatibility.</p>
+
+    <div class="image-container">
+        <h2 style="padding: 0 20px;">mysteries-background.svg</h2>
+        <img src="mysteries-background.svg" alt="Mystery Blog Background">
+        <div class="description">
+            <p><strong>Description:</strong> This image serves as the main background for the Mystery Blog header. It features a dark purple starry sky with a subtle constellation pattern and a distant moonlight effect.</p>
+            
+            <p><strong>Current Path:</strong> <code>/images/blog/mysteries-background.svg</code></p>
+            
+            <p><strong>Production Recommendation:</strong> Convert to JPG and use as <code>/images/blog/mysteries-background.jpg</code></p>
+        </div>
+    </div>
+
+    <div class="image-container">
+        <h2 style="padding: 0 20px;">fog-overlay.svg</h2>
+        <img src="fog-overlay.svg" alt="Fog Overlay">
+        <div class="description">
+            <p><strong>Description:</strong> This image provides a misty fog effect to overlay on top of the main background, creating an atmospheric mystery-themed header.</p>
+            
+            <p><strong>Current Path:</strong> <code>/images/blog/fog-overlay.svg</code></p>
+            
+            <p><strong>Production Recommendation:</strong> Convert to PNG with transparency and use as <code>/images/blog/fog-overlay.png</code></p>
+        </div>
+    </div>
+
+    <h2>How to Convert for Production</h2>
+    
+    <p>You can convert these SVG files to PNG/JPG using various tools:</p>
+    
+    <ul>
+        <li><strong>Browser:</strong> Open the SVG in a browser, take a screenshot, and crop as needed</li>
+        <li><strong>Inkscape:</strong> Open the SVG and export as PNG/JPG</li>
+        <li><strong>ImageMagick:</strong> Use the command line:
+            <pre>convert mysteries-background.svg mysteries-background.jpg
+convert fog-overlay.svg fog-overlay.png</pre>
+        </li>
+        <li><strong>Online Converters:</strong> Various websites can convert SVG to PNG/JPG</li>
+    </ul>
+    
+    <p><strong>Note:</strong> The current blog code is looking for JPG/PNG versions of these files. If you wish to use the SVG files directly, update the paths in <code>gaia/src/app/blogs/mysteries/page.tsx</code>.</p>
+
+</body>
+</html> 

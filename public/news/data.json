@@ -1,0 +1,212 @@
+[
+  {
+    "id": "econ1",
+    "title": "US Federal Reserve considers interest rate cuts",
+    "content": "The Federal Reserve is evaluating potential interest rate cuts as inflation shows signs of cooling.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 38.8951,
+      "lng": -77.0364
+    },
+    "type": "economy",
+    "region": "north_america"
+  },
+  {
+    "id": "econ2",
+    "title": "European markets react to US tariff announcements",
+    "content": "European markets showed volatility following announcements of new US tariffs on imported goods.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 50.8503,
+      "lng": 4.3517
+    },
+    "type": "economy",
+    "region": "western_europe"
+  },
+  {
+    "id": "econ3",
+    "title": "China's economic growth exceeds expectations",
+    "content": "China reported stronger than expected GDP growth for the quarter, surprising analysts.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 39.9042,
+      "lng": 116.4074
+    },
+    "type": "economy",
+    "region": "east_asia"
+  },
+  {
+    "id": "ukr1",
+    "title": "Ukraine reports advances in eastern territories",
+    "content": "Ukrainian forces have made tactical advances in eastern territories according to military sources.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 49.4871,
+      "lng": 31.2718
+    },
+    "type": "conflict",
+    "region": "eastern_europe"
+  },
+  {
+    "id": "ukr2",
+    "title": "Russia mobilizes additional troops near border",
+    "content": "Russian military has reportedly mobilized additional troops near the Ukrainian border.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 55.7558,
+      "lng": 37.6173
+    },
+    "type": "conflict",
+    "region": "eastern_europe"
+  },
+  {
+    "id": "gaz1",
+    "title": "Aid convoy reaches northern Gaza",
+    "content": "Humanitarian aid convoy successfully delivered supplies to northern Gaza communities.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 31.5017,
+      "lng": 34.4668
+    },
+    "type": "conflict",
+    "region": "middle_east"
+  },
+  {
+    "id": "gaz2",
+    "title": "UN calls for immediate ceasefire in Gaza",
+    "content": "United Nations Security Council issued statement calling for immediate ceasefire.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 31.5017,
+      "lng": 34.4668
+    },
+    "type": "conflict",
+    "region": "middle_east"
+  },
+  {
+    "id": "pal1",
+    "title": "West Bank tensions rise after settlement expansion",
+    "content": "Tensions increased in the West Bank following announcement of settlement expansion.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 31.9474,
+      "lng": 35.3027
+    },
+    "type": "conflict",
+    "region": "middle_east"
+  },
+  {
+    "id": "twn1",
+    "title": "Taiwan conducts military exercises amid rising tensions",
+    "content": "Taiwan's military conducted scheduled exercises as regional tensions continue.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 23.6978,
+      "lng": 120.9605
+    },
+    "type": "conflict",
+    "region": "east_asia"
+  },
+  {
+    "id": "twn2",
+    "title": "China increases naval presence in Taiwan Strait",
+    "content": "Chinese naval vessels increased presence in the Taiwan Strait according to defense ministry.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 24.4801,
+      "lng": 118.3737
+    },
+    "type": "conflict",
+    "region": "east_asia"
+  },
+  {
+    "id": "pol1",
+    "title": "US presidential candidates gear up for debate",
+    "content": "Presidential candidates finalize preparations for upcoming televised debate.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 38.9072,
+      "lng": -77.0369
+    },
+    "type": "politics",
+    "region": "north_america"
+  },
+  {
+    "id": "pol2",
+    "title": "UK parliament approves controversial new legislation",
+    "content": "British parliament approved new legislation despite significant opposition.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 51.4975,
+      "lng": -0.1357
+    },
+    "type": "politics",
+    "region": "western_europe"
+  },
+  {
+    "id": "dis1",
+    "title": "Typhoon approaches Philippines eastern coast",
+    "content": "Powerful typhoon approaching the eastern coast of the Philippines prompts evacuations.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 14.5995,
+      "lng": 120.9842
+    },
+    "type": "disaster",
+    "region": "southeast_asia"
+  },
+  {
+    "id": "dis2",
+    "title": "Earthquake in Turkey causes minimal damage",
+    "content": "Moderate earthquake struck Turkey's western region causing minimal damage and no reported casualties.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 38.9637,
+      "lng": 35.2433
+    },
+    "type": "disaster",
+    "region": "middle_east"
+  },
+  {
+    "id": "mya1",
+    "title": "Myanmar military increases presence in northern regions",
+    "content": "Myanmar's military has reportedly increased presence in northern regions amid ongoing conflict.",
+    "source": "Sample News",
+    "date": "2025-04-06T18:00:07.068Z",
+    "timestamp": 1743962407068,
+    "location": {
+      "lat": 19.7633,
+      "lng": 96.0785
+    },
+    "type": "conflict",
+    "region": "southeast_asia"
+  }
+]

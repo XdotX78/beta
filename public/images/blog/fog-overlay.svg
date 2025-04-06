@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1920" height="1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="fog" x="-50%" y="-50%" width="200%" height="200%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="5" seed="3" />
+      <feDisplacementMap in="SourceGraphic" scale="120" />
+      <feGaussianBlur stdDeviation="40" />
+    </filter>
+    
+    <filter id="softFog" x="-50%" y="-50%" width="200%" height="200%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="3" seed="5" />
+      <feDisplacementMap in="SourceGraphic" scale="60" />
+      <feGaussianBlur stdDeviation="25" />
+    </filter>
+    
+    <mask id="fogMask">
+      <rect width="100%" height="100%" fill="white" />
+      <g filter="url(#fog)">
+        <rect x="0" y="0" width="100%" height="100%" fill="black" opacity="0.7" />
+      </g>
+      <g filter="url(#softFog)">
+        <rect x="0" y="0" width="100%" height="100%" fill="black" opacity="0.5" />
+      </g>
+    </mask>
+  </defs>
+  
+  <!-- Background with fog effect -->
+  <rect width="100%" height="100%" fill="white" mask="url(#fogMask)" />
+  
+  <!-- Additional fog wisps -->
+  <g opacity="0.7" filter="url(#softFog)">
+    <path d="M0,300 Q480,200 960,300 Q1440,400 1920,300" stroke="white" stroke-width="150" fill="none" />
+    <path d="M0,600 Q480,500 960,600 Q1440,700 1920,600" stroke="white" stroke-width="120" fill="none" />
+    <path d="M0,900 Q480,800 960,700 Q1440,600 1920,700" stroke="white" stroke-width="180" fill="none" />
+  </g>
+  
+  <g opacity="0.5" filter="url(#fog)">
+    <path d="M0,150 Q480,250 960,150 Q1440,50 1920,150" stroke="white" stroke-width="100" fill="none" />
+    <path d="M0,450 Q480,350 960,450 Q1440,550 1920,450" stroke="white" stroke-width="80" fill="none" />
+    <path d="M0,750 Q480,850 960,750 Q1440,650 1920,750" stroke="white" stroke-width="130" fill="none" />
+  </g>
+</svg> 

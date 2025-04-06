@@ -1,0 +1,34 @@
+# Cron Schedule for News Scraping
+# This file provides examples of how to schedule the news scraper
+# to run automatically using cron jobs (Linux/Mac) or Task Scheduler (Windows)
+
+# === Linux/Mac Cron Job Examples ===
+
+# Run the news scraper every 4 hours
+0 */4 * * * cd /path/to/your/project && npm run update-news
+
+# Run the news scraper once a day at 6 AM
+0 6 * * * cd /path/to/your/project && npm run update-news
+
+# Run the news scraper every Monday, Wednesday, and Friday at 8 AM
+0 8 * * 1,3,5 cd /path/to/your/project && npm run update-news
+
+# === Windows Task Scheduler ===
+# For Windows, you can create a scheduled task using Task Scheduler:
+# 1. Open Task Scheduler
+# 2. Create a Basic Task
+# 3. Set the trigger (e.g., Daily at 6 AM)
+# 4. For the Action, select "Start a program"
+# 5. Program/script: C:\Windows\System32\cmd.exe
+# 6. Add arguments: /c "cd C:\path\to\your\project && npm run update-news"
+
+# === README ===
+# To manually run the news scraper, use:
+# npm run update-news
+
+# The scraper will:
+# 1. Fetch news from Reuters, BBC, and Al Jazeera
+# 2. Process and geocode the articles
+# 3. Categorize them by topic
+# 4. Save to public/news/data.json
+# 5. Fall back to sample data if scraping fails 

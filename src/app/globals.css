@@ -1,0 +1,259 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@theme {
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-sans);
+}
+
+/* Hero gradient animation */
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+      rgba(75, 0, 130, 0.4) 0%,
+      rgba(0, 0, 0, 0) 50%,
+      rgba(0, 128, 128, 0.4) 100%);
+  mix-blend-mode: overlay;
+  animation: gradientShift 15s ease infinite alternate;
+  z-index: 5;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Card hover effects */
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Floating CTA button */
+.floating-btn {
+  animation: float 3s ease-in-out infinite;
+  position: relative;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Glowing effect for primary buttons */
+.glow-effect {
+  position: relative;
+}
+
+.glow-effect::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  z-index: -1;
+  background: linear-gradient(45deg, #4f46e5, #7e22ce);
+  border-radius: 9999px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glow-effect:hover::after {
+  opacity: 0.4;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+}
+
+/* Text gradient effect */
+.text-gradient {
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: textShimmer 4s linear infinite;
+}
+
+@keyframes textShimmer {
+  0% {
+    background-position: 0% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Cloud Transition Effects */
+@keyframes drift {
+  from {
+    transform: translateX(-10%) translateY(0);
+  }
+
+  to {
+    transform: translateX(10%) translateY(0);
+  }
+}
+
+@keyframes drift-reverse {
+  from {
+    transform: translateX(10%) translateY(0);
+  }
+
+  to {
+    transform: translateX(-10%) translateY(0);
+  }
+}
+
+.cloud-layer-1.starting {
+  opacity: 0;
+  animation: drift 15s infinite linear, cloudFadeIn 2s forwards;
+}
+
+.cloud-layer-1.peak {
+  opacity: 0.9;
+}
+
+.cloud-layer-1.ending {
+  opacity: 0.9;
+  animation: drift 15s infinite linear, cloudFadeOut 1s forwards;
+}
+
+.cloud-layer-2.starting {
+  opacity: 0;
+  animation: drift-reverse 25s infinite linear, cloudFadeIn 2s forwards;
+}
+
+.cloud-layer-2.peak {
+  opacity: 0.8;
+}
+
+.cloud-layer-2.ending {
+  opacity: 0.8;
+  animation: drift-reverse 25s infinite linear, cloudFadeOut 1s forwards;
+}
+
+.cloud-layer-3.starting {
+  opacity: 0;
+  animation: drift 20s infinite linear, cloudFadeIn 2s forwards;
+}
+
+.cloud-layer-3.peak {
+  opacity: 0.95;
+}
+
+.cloud-layer-3.ending {
+  opacity: 0.95;
+  animation: drift 20s infinite linear, cloudFadeOut 1s forwards;
+}
+
+@keyframes cloudFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.9;
+  }
+}
+
+@keyframes cloudFadeOut {
+  from {
+    opacity: 0.9;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes turbulence {
+
+  0%,
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+
+  25% {
+    transform: translateX(5px) translateY(-5px);
+  }
+
+  50% {
+    transform: translateX(-5px) translateY(5px);
+  }
+
+  75% {
+    transform: translateX(-5px) translateY(-5px);
+  }
+}
+
+.animate-in {
+  animation: cloudFadeIn 1.5s forwards;
+}
+
+.animate-out {
+  animation: cloudFadeOut 1.5s forwards;
+}
+
+.turbulence {
+  animation: turbulence 0.5s ease-in-out;
+}

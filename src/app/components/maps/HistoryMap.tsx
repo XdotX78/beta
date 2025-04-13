@@ -6,7 +6,6 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { loadFonts } from "../../lib/fontLoader";
 import { GeoJSON } from "react-leaflet";
 
 // Define types for historical data
@@ -402,8 +401,6 @@ const HistoryMap = () => {
   // Preload marker images and initialize
   useLayoutEffect(() => {
     // Load fonts and marker images
-    Promise.all([
-      loadFonts(),
       preloadMarkerImages(),
       preloadGlobeTextures()
     ])

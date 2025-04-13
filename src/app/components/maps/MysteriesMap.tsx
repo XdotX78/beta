@@ -7,7 +7,6 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import "leaflet/dist/leaflet.css";
 import CloudTransition from "../effects/CloudTransition";
-import { loadFonts } from '@/app/lib/fontLoader';
 
 // Define mystery types
 type MysteryCategory = "unexplained" | "ancient" | "conspiracy" | "cryptid";
@@ -211,13 +210,6 @@ const MysteriesMap = () => {
   // Setup once when component is mounted
   useLayoutEffect(() => {
     preloadMarkerImages();
-    
-    try {
-      // Load fonts explicitly
-      loadFonts();
-    } catch (error) {
-      console.warn('Font loading skipped:', error);
-    }
   }, []);
 
   // Preload globe textures

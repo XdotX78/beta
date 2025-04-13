@@ -1,91 +1,64 @@
-"use client";
-
-import { useState } from "react";
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { FaSearch, FaCalendarAlt, FaUser, FaArrowRight } from "react-icons/fa";
 
-// Sample mystery blog posts data
-const mysteryPosts = [
-  {
-    id: 7,
-    title: "Jack the Ripper: The Enduring Mystery of Victorian London",
-    excerpt: "London's most infamous serial killer remains unidentified over a century later, despite modern forensic analysis and countless investigations...",
-    imageUrl: "/images/blog/jack-the-ripper.jpg",
-    category: "historical",
-    author: "xdotx",
-    date: "March 5, 2025",
-    readTime: "12 min read",
-    featured: true
-  },
-  {
-    id: 1,
-    title: "The Voynich Manuscript: History's Most Mysterious Text",
-    excerpt: "Explore the enigmatic 15th century manuscript that has confounded linguists, cryptographers and historians for centuries...",
-    imageUrl: "/images/blog/voynich-manuscript.jpg",
-    category: "ancient-mysteries",
-    author: "Dr. Elena Fortham",
-    date: "February 28, 2025",
-    readTime: "8 min read",
-    featured: true
-  },
-  {
-    id: 2,
-    title: "Bermuda Triangle: New Theories on the World's Deadliest Waters",
-    excerpt: "Recent scientific investigations offer compelling explanations for the mysterious disappearances that have made this region infamous...",
-    imageUrl: "/images/blog/bermuda-triangle.jpg",
-    category: "unexplained-phenomena",
-    author: "Marcus Chen",
-    date: "February 25, 2025",
-    readTime: "6 min read",
-    featured: true
-  },
-  {
-    id: 3,
-    title: "The Nazca Lines: Messages to the Sky Gods?",
-    excerpt: "New drone footage reveals previously undiscovered patterns in Peru's ancient geoglyphs, raising questions about their true purpose...",
-    imageUrl: "/images/blog/nazca-lines.jpg",
-    category: "ancient-mysteries",
-    author: "Sofia Rodriguez",
-    date: "February 21, 2025",
-    readTime: "7 min read",
-    featured: false
-  },
-  {
-    id: 4,
-    title: "The Dyatlov Pass Incident: Case Reopened",
-    excerpt: "Russian investigators have uncovered new evidence about the mysterious deaths of nine hikers in the Ural Mountains in 1959...",
-    imageUrl: "/images/blog/dyatlov-pass.jpg",
-    category: "unexplained-phenomena",
-    author: "Ivan Petrov",
-    date: "February 18, 2025",
-    readTime: "10 min read",
-    featured: false
-  },
-  {
-    id: 5,
-    title: "The Search for Cryptids: Science Meets Folklore",
-    excerpt: "How modern scientific methods are being used to investigate legendary creatures from around the world...",
-    imageUrl: "/images/blog/cryptids.jpg",
-    category: "cryptids",
-    author: "Dr. James Woodward",
-    date: "February 15, 2025",
-    readTime: "5 min read",
-    featured: false
-  },
-  {
-    id: 6,
-    title: "Easter Island's Moai: The Statues That Walked?",
-    excerpt: "Archaeological experiments demonstrate how ancient Polynesians might have transported the massive stone figures...",
-    imageUrl: "/images/blog/easter-island.jpg",
-    category: "ancient-mysteries",
-    author: "Dr. Laura Hansen",
-    date: "February 12, 2025",
-    readTime: "9 min read",
-    featured: false
-  },
-];
+// Define the expected structure of the frontmatter
+interface PostFrontmatter {
+  title: string;
+  date: string;
+  author: string;
+  description?: string;
+  tags?: string[];
+  featured?: boolean;
+  imageUrl?: string; // Optional image URL from frontmatter
+}
+
+// Define the structure of the post object we'll use
+interface Post {
+  slug: string;
+  frontmatter: PostFrontmatter;
+  excerpt: string;
+}
+
+// Function to get posts - this runs on the server
+function getMysteryPosts(): Post[] {
+  const postsDirectory = path.join(process.cwd(), 'src/app/blogs/mysteries');
+
+  try {
+    const filenames = fs.readdirSync(postsDirectory);
+
+    const mdxFiles = filenames.filter(
+      (filename) => filename.endsWith('.mdx') && filename !== 'page.tsx'
+    );
+
+    const posts = mdxFiles.map((filename) => {
+      const slug = filename.replace('.mdx', '');
+      const filePath = path.join(postsDirectory, filename);
+      const fileContents = fs.readFileSync(filePath, 'utf8');
+      const { data, content } = matter(fileContents);
+
+      // Basic excerpt generation (first 150 chars of content, replacing newlines)
+      const excerpt = content.substring(0, 150).replace(/\n/g, ' ') + '...';
+
+      return {
+        slug,
+        frontmatter: data as PostFrontmatter,
+        excerpt,
+      };
+    });
+
+    // Sort posts by date (newest first) - requires valid date strings
+    posts.sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
+
+    return posts;
+  } catch (error) {
+    console.error("Error reading mystery posts:", error);
+    return []; // Return empty array on error
+  }
+}
 
 // Mystery categories with icons and descriptions
 const categories = [
@@ -98,19 +71,18 @@ const categories = [
 ];
 
 export default function MysteriesBlogPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const posts = getMysteryPosts(); // Fetch posts on the server
 
-  // Filter posts based on search query and selected category
-  const filteredPosts = mysteryPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "" || post.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  // TODO: Re-implement search/filtering. 
+  // For server components, filtering usually happens based on searchParams 
+  // or requires a client component wrapper for interactive state.
+  // For simplicity, showing all posts for now.
+  const filteredPosts = posts;
+  const featuredPosts = posts.filter(post => post.frontmatter.featured);
 
-  // Featured posts (for the hero section)
-  const featuredPosts = mysteryPosts.filter(post => post.featured);
+  // TODO: Dynamically generate categories from post tags if needed
+  // const allTags = posts.flatMap(post => post.frontmatter.tags || []);
+  // const categories = [...new Set(allTags)].map(tag => ({ name: tag, slug: tag, count: allTags.filter(t => t === tag).length }));
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
@@ -128,39 +100,16 @@ export default function MysteriesBlogPage() {
           mixBlendMode: "screen"
         }}></div>
         <div className="relative container mx-auto px-4 h-full flex flex-col justify-center z-10">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+          <h1
             className="text-4xl md:text-6xl font-bold mb-4 text-white drop-shadow-lg"
           >
             Mysteries of the Unknown
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+          </h1>
+          <p
             className="text-xl md:text-2xl mb-8 max-w-2xl text-gray-300 drop-shadow-md"
           >
             Exploring the unexplained, the enigmatic, and the extraordinary from around the world
-          </motion.p>
-
-          {/* Search Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative max-w-md"
-          >
-            <input
-              type="text"
-              placeholder="Search for mysteries..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-3 px-12 rounded-full bg-gray-800/80 backdrop-blur-sm text-white border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-lg"
-            />
-            <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400" />
-          </motion.div>
+          </p>
         </div>
       </div>
 
@@ -175,36 +124,40 @@ export default function MysteriesBlogPage() {
                 <h2 className="text-2xl font-bold mb-6 text-purple-300 border-b border-purple-800 pb-2">Featured Mysteries</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {featuredPosts.map(post => (
-                    <Link href={`/blogs/mysteries/${post.id}`} key={post.id}>
+                    <Link href={`/blogs/mysteries/${post.slug}`} key={post.slug}>
                       <div className="bg-gray-800 rounded-lg overflow-hidden transition-transform hover:scale-[1.01] hover:shadow-purple-900/30 hover:shadow-lg">
                         <div className="relative h-48">
                           <div className="absolute inset-0 bg-gray-700 animate-pulse"></div>
-                          {/* Replace with actual image when available */}
-                          {/* <Image 
-                            src={post.imageUrl}
-                            alt={post.title}
-                            fill
-                            className="object-cover"
-                          /> */}
+                          {/* Placeholder for image - load from post.frontmatter.imageUrl if available */}
+                          {post.frontmatter.imageUrl && (
+                            <Image
+                              src={post.frontmatter.imageUrl}
+                              alt={post.frontmatter.title}
+                              fill
+                              className="object-cover"
+                            />
+                          )}
                         </div>
                         <div className="p-5">
                           <div className="flex items-center mb-3">
-                            <span className="text-xs font-medium mr-2 px-2.5 py-0.5 rounded bg-purple-900 text-purple-300">
-                              {post.category.split('-').join(' ')}
-                            </span>
+                            {/* Display tags if available */}
+                            {post.frontmatter.tags && post.frontmatter.tags.length > 0 && (
+                              <span className="text-xs font-medium mr-2 px-2.5 py-0.5 rounded bg-purple-900 text-purple-300">
+                                {post.frontmatter.tags[0]} {/* Show first tag */}
+                              </span>
+                            )}
                             <span className="text-xs text-gray-400 flex items-center">
                               <FaCalendarAlt className="mr-1" size={10} />
-                              {post.date}
+                              {new Date(post.frontmatter.date).toLocaleDateString()} {/* Format date */}
                             </span>
                           </div>
-                          <h3 className="text-xl font-bold mb-2 text-white">{post.title}</h3>
+                          <h3 className="text-xl font-bold mb-2 text-white">{post.frontmatter.title}</h3>
                           <p className="text-gray-400 mb-4 line-clamp-2">{post.excerpt}</p>
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-400 flex items-center">
                               <FaUser className="mr-1" size={12} />
-                              {post.author}
+                              {post.frontmatter.author}
                             </span>
-                            <span className="text-sm text-purple-400">{post.readTime}</span>
                           </div>
                         </div>
                       </div>
@@ -218,37 +171,41 @@ export default function MysteriesBlogPage() {
             <h2 className="text-2xl font-bold mb-6 text-purple-300 border-b border-purple-800 pb-2">Latest Articles</h2>
             {filteredPosts.length === 0 ? (
               <div className="text-center py-10">
-                <p className="text-lg text-gray-400">No mysteries found matching your search.</p>
+                <p className="text-lg text-gray-400">No mysteries found.</p> {/* Updated message */}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {filteredPosts.map(post => (
-                  <Link href={`/blogs/mysteries/${post.id}`} key={post.id}>
+                  <Link href={`/blogs/mysteries/${post.slug}`} key={post.slug}>
                     <div className="bg-gray-800 rounded-lg overflow-hidden h-full flex flex-col transition-transform hover:scale-[1.01] hover:shadow-purple-900/30 hover:shadow-lg">
                       <div className="relative h-40">
                         <div className="absolute inset-0 bg-gray-700 animate-pulse"></div>
-                        {/* Replace with actual image when available */}
-                        {/* <Image 
-                          src={post.imageUrl}
-                          alt={post.title}
-                          fill
-                          className="object-cover"
-                        /> */}
+                        {/* Placeholder for image - load from post.frontmatter.imageUrl if available */}
+                        {post.frontmatter.imageUrl && (
+                          <Image
+                            src={post.frontmatter.imageUrl}
+                            alt={post.frontmatter.title}
+                            fill
+                            className="object-cover"
+                          />
+                        )}
                       </div>
                       <div className="p-4 flex-grow flex flex-col">
                         <div className="flex items-center mb-2">
-                          <span className="text-xs font-medium mr-2 px-2 py-0.5 rounded bg-purple-900 text-purple-300">
-                            {post.category.split('-').join(' ')}
-                          </span>
+                          {/* Display tags */}
+                          {post.frontmatter.tags && post.frontmatter.tags.length > 0 && (
+                            <span className="text-xs font-medium mr-2 px-2.5 py-0.5 rounded bg-purple-900 text-purple-300">
+                              {post.frontmatter.tags[0]}
+                            </span>
+                          )}
                         </div>
-                        <h3 className="text-lg font-bold mb-2 text-white">{post.title}</h3>
+                        <h3 className="text-lg font-bold mb-2 text-white">{post.frontmatter.title}</h3>
                         <p className="text-gray-400 mb-3 text-sm line-clamp-2 flex-grow">{post.excerpt}</p>
                         <div className="flex justify-between items-center text-xs text-gray-400 mt-auto">
                           <span className="flex items-center">
                             <FaCalendarAlt className="mr-1" size={10} />
-                            {post.date}
+                            {new Date(post.frontmatter.date).toLocaleDateString()} {/* Format date */}
                           </span>
-                          <span>{post.readTime}</span>
                         </div>
                       </div>
                     </div>
@@ -277,26 +234,24 @@ export default function MysteriesBlogPage() {
               <ul className="space-y-3">
                 <li>
                   <button
-                    onClick={() => setSelectedCategory("")}
-                    className={`w-full text-left px-3 py-2 rounded transition-colors flex justify-between items-center ${selectedCategory === "" ? "bg-purple-900 text-white" : "text-gray-300 hover:bg-gray-700"
+                    className={`w-full text-left px-3 py-2 rounded transition-colors flex justify-between items-center bg-gray-700 text-gray-300" 
                       }`}
                   >
                     <span>All Categories</span>
-                    <span className="text-sm bg-gray-700 px-2 py-0.5 rounded-full">
-                      {mysteryPosts.length}
+                    <span className="text-sm bg-gray-600 px-2 py-0.5 rounded-full">
+                      {posts.length}
                     </span>
                   </button>
                 </li>
-                {categories.map((category) => (
-                  <li key={category.slug}>
+                {[...new Set(posts.flatMap(p => p.frontmatter.tags || []))].map(tag => (
+                  <li key={tag}>
                     <button
-                      onClick={() => setSelectedCategory(category.slug)}
-                      className={`w-full text-left px-3 py-2 rounded transition-colors flex justify-between items-center ${selectedCategory === category.slug ? "bg-purple-900 text-white" : "text-gray-300 hover:bg-gray-700"
-                        }`}
+                      className={`w-full text-left px-3 py-2 rounded transition-colors flex justify-between items-center text-gray-300 hover:bg-gray-700"
+                      }`}
                     >
-                      <span>{category.name}</span>
+                      <span>{tag}</span>
                       <span className="text-sm bg-gray-700 px-2 py-0.5 rounded-full">
-                        {category.count}
+                        {posts.filter(p => p.frontmatter.tags?.includes(tag)).length}
                       </span>
                     </button>
                   </li>
@@ -308,22 +263,29 @@ export default function MysteriesBlogPage() {
             <div className="bg-gray-800 rounded-lg p-6 mb-8">
               <h3 className="text-xl font-bold mb-4 text-white">Popular Posts</h3>
               <ul className="space-y-4">
-                {mysteryPosts.slice(0, 3).map(post => (
-                  <li key={post.id} className="flex space-x-3">
+                {(featuredPosts.length > 0 ? featuredPosts : posts).slice(0, 3).map(post => (
+                  <li key={post.slug} className="flex space-x-3">
                     <div className="relative h-16 w-16 flex-shrink-0 rounded overflow-hidden">
-                      <div className="absolute inset-0 bg-gray-700 animate-pulse"></div>
-                      {/* Replace with actual image when available */}
-                      {/* <Image 
-                        src={post.imageUrl}
-                        alt={post.title}
-                        fill
-                        className="object-cover"
-                      /> */}
+                      {/* Use a placeholder div if no image */}
+                      {!post.frontmatter.imageUrl && (
+                        <div className="absolute inset-0 bg-gray-700 flex items-center justify-center text-gray-500">
+                          No Image
+                        </div>
+                      )}
+                      {post.frontmatter.imageUrl && (
+                        <Image
+                          src={post.frontmatter.imageUrl}
+                          alt={post.frontmatter.title}
+                          fill
+                          className="object-cover"
+                          sizes="64px"
+                        />
+                      )}
                     </div>
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-200">{post.title}</h4>
-                      <span className="text-xs text-gray-400">{post.date}</span>
-                    </div>
+                    <Link href={`/blogs/mysteries/${post.slug}`} className="hover:text-purple-300 transition-colors duration-200">
+                      <h4 className="text-sm font-semibold text-gray-200">{post.frontmatter.title}</h4>
+                      <span className="text-xs text-gray-400">{new Date(post.frontmatter.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -339,7 +301,7 @@ export default function MysteriesBlogPage() {
                   placeholder="Your email address"
                   className="w-full py-2 px-4 rounded bg-gray-800 bg-opacity-50 text-white border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
-                <button className="w-full py-2 px-4 bg-purple-700 hover:bg-purple-600 text-white rounded font-medium transition-colors flex justify-center items-center">
+                <button type="submit" className="w-full py-2 px-4 bg-purple-700 hover:bg-purple-600 text-white rounded font-medium transition-colors flex justify-center items-center">
                   Subscribe
                   <FaArrowRight className="ml-2" size={14} />
                 </button>

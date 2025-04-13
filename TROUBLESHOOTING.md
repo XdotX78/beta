@@ -98,6 +98,35 @@ If you experience the issue where the landing page loads successfully but subseq
    Stop-Process -Id [PID] -Force
    ```
 
+### Google Font Content Security Policy (CSP) Errors
+
+If you see errors in the browser console like:
+`Refused to load the stylesheet 'https://fonts.googleapis.com/...' because it violates the following Content Security Policy directive: "style-src 'self' 'unsafe-inline'"`
+
+This means the browser is trying to load fonts directly from Google Fonts, but the default security policy prevents it. This usually happens if the standard Next.js font optimization (`next/font`) is being bypassed.
+
+1. **Check for Direct Font Imports:**
+   Ensure you are **not** using `@import url('https://fonts.googleapis.com/...')` rules in any CSS files (especially `src/app/fonts.css` or `src/app/globals.css`). The preferred method is using `next/font/google` imports within your layout or components.
+   
+   ```javascript
+   // Example in src/app/layout.tsx (Correct)
+   import { Inter } from 'next/font/google';
+   const inter = Inter({ subsets: ['latin'] });
+   // ... use inter.className
+   ```
+
+2. **Check for Manual `<link>` Tags:**
+   Verify that you haven't manually added `<link rel="stylesheet" href="https://fonts.googleapis.com/...">` tags to the `<head>` section of your `src/app/layout.tsx` or other pages. `next/font` handles this automatically.
+
+3. **Clear Caches:**
+   If the imports seem correct, persistent caching might be the issue.
+   - Clear the Next.js cache: `Remove-Item -Recurse -Force .next` (PowerShell) or `rm -rf .next` (Bash/Zsh)
+   - Clear your browser's cache thoroughly.
+   - Restart the development server (`npm run dev`).
+
+4. **Check Browser Extensions:**
+   Rarely, a browser extension might interfere or inject font links. Try running the application in an Incognito/Private window to see if the error persists.
+
 ## Next.js Config Issues
 
 Your current Next.js config has warnings:

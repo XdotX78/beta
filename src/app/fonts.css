@@ -1,10 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&display=swap');
+/* src/app/fonts.css */
 
-/* Font loading optimizations */
+/* 
+  Ensure no direct Google Font imports remain here.
+  Fonts should be loaded via next/font in layout.tsx or relevant components.
+*/
 
-/* Font fallbacks */
+/* Font fallbacks - Define font variables if needed, but don't load fonts here */
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-mono: 'Fira Mono', ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
 }
+
+/* Add any custom @font-face rules for locally hosted fonts below if needed */

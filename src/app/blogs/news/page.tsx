@@ -6,13 +6,27 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { FaSearch, FaCalendarAlt, FaUser, FaArrowRight, FaGlobe, FaTag } from "react-icons/fa";
 
-// Sample news categories with their counts and colors
+interface Post {
+  slug: string;
+  title: string;
+  excerpt: string;
+  imageUrl: string;
+  category: string;
+  subcategory?: string;
+  author: string;
+  date: string;
+  readTime: string;
+  featured: boolean;
+  subBlog?: string;
+}
+
+// News categories with their counts and colors
 const newsCategories = [
-  { id: "world-politics", name: "World & Politics", count: 124, color: "bg-blue-600", icon: "📰" },
-  { id: "wars", name: "WARS", count: 62, color: "bg-red-600", icon: "⚔️" },
-  { id: "science-tech", name: "Science & Tech", count: 87, color: "bg-purple-600", icon: "🧠" },
-  { id: "planet-people", name: "Planet & People", count: 65, color: "bg-green-600", icon: "🌿" },
-  { id: "culture-curiosities", name: "Culture & Curiosities", count: 43, color: "bg-pink-600", icon: "🎭" },
+  { id: "world-politics", name: "World & Politics", color: "bg-blue-600", icon: "📰" },
+  { id: "wars", name: "WARS", color: "bg-red-600", icon: "⚔️" },
+  { id: "science-tech", name: "Science & Tech", color: "bg-purple-600", icon: "🧠" },
+  { id: "planet-people", name: "Planet & People", color: "bg-green-600", icon: "🌿" },
+  { id: "culture-curiosities", name: "Culture & Curiosities", color: "bg-pink-600", icon: "🎭" },
 ];
 
 // Sub-blogs data
@@ -21,7 +35,6 @@ const subBlogs = [
     id: "ukraine",
     name: "Ukraine Conflict",
     description: "Ongoing coverage of the Ukraine-Russia war and its global impact",
-    articleCount: 47,
     imageUrl: "/images/blog/ukraine.jpg",
     color: "from-blue-700 to-yellow-500",
   },
@@ -29,229 +42,59 @@ const subBlogs = [
     id: "palestine",
     name: "Palestine Crisis",
     description: "Updates on the humanitarian situation and peace efforts in Gaza",
-    articleCount: 39,
     imageUrl: "/images/blog/palestine.jpg",
     color: "from-green-700 to-red-600 to-black",
   }
 ];
 
-// Sample news blog posts data
-const newsPosts = [
-  {
-    id: 1,
-    title: "Global Summit on Climate Change Reaches Historic Agreement",
-    excerpt: "World leaders have committed to ambitious new targets for carbon reduction, marking a turning point in international climate policy...",
-    imageUrl: "/images/blog/climate-summit.jpg",
-    category: "world-politics",
-    subcategory: "diplomacy",
-    author: "Sarah Johnson",
-    date: "March 1, 2025",
-    readTime: "5 min read",
-    featured: true
-  },
-  {
-    id: 2,
-    title: "Breakthrough in Quantum Computing Challenges Encryption Standards",
-    excerpt: "Researchers have achieved quantum supremacy in a new domain, raising urgent questions about the security of current encryption methods...",
-    imageUrl: "/images/blog/quantum-computing.jpg",
-    category: "science-tech",
-    subcategory: "innovation",
-    author: "Dr. Michael Chen",
-    date: "February 28, 2025",
-    readTime: "7 min read",
-    featured: true
-  },
-  {
-    id: 3,
-    title: "Market Volatility Continues as Central Banks Adjust Policies",
-    excerpt: "Global markets reacted sharply to unexpected policy shifts from major central banks, with tech stocks experiencing significant fluctuations...",
-    imageUrl: "/images/blog/market-volatility.jpg",
-    category: "world-politics",
-    subcategory: "economy",
-    author: "Robert Kumar",
-    date: "February 27, 2025",
-    readTime: "4 min read",
-    featured: true
-  },
-  {
-    id: 4,
-    title: "New Research Challenges Understanding of Dark Matter",
-    excerpt: "Astronomical observations from the James Webb Space Telescope have led scientists to reconsider fundamental theories about dark matter...",
-    imageUrl: "/images/blog/dark-matter.jpg",
-    category: "science-tech",
-    subcategory: "space",
-    author: "Dr. Elena Vasquez",
-    date: "February 26, 2025",
-    readTime: "6 min read",
-    featured: false
-  },
-  {
-    id: 5,
-    title: "EU Passes Landmark Digital Rights Legislation",
-    excerpt: "The European Union has approved comprehensive new laws governing AI, data protection, and online content moderation...",
-    imageUrl: "/images/blog/eu-legislation.jpg",
-    category: "world-politics",
-    subcategory: "policy",
-    author: "Hans Müller",
-    date: "February 25, 2025",
-    readTime: "5 min read",
-    featured: false
-  },
-  {
-    id: 6,
-    title: "Breakthrough Treatment Shows Promise for Alzheimer's Disease",
-    excerpt: "Clinical trials of a novel immunotherapy approach have demonstrated significant cognitive improvements in early-stage Alzheimer's patients...",
-    imageUrl: "/images/blog/alzheimers-research.jpg",
-    category: "planet-people",
-    subcategory: "health",
-    author: "Dr. James Wilson",
-    date: "February 24, 2025",
-    readTime: "8 min read",
-    featured: false
-  },
-  {
-    id: 7,
-    title: "Ukraine Peace Talks Resume After Military Stalemate",
-    excerpt: "Diplomatic negotiations have restarted following a prolonged stalemate on the eastern front, with cautious optimism from international observers...",
-    imageUrl: "/images/blog/ukraine-talks.jpg",
-    category: "world-politics",
-    subcategory: "conflict",
-    author: "Olena Kovalenko",
-    date: "February 23, 2025",
-    readTime: "6 min read",
-    featured: false,
-    subBlog: "ukraine"
-  },
-  {
-    id: 8,
-    title: "Humanitarian Aid Reaches Gaza as Ceasefire Holds",
-    excerpt: "Aid convoys have successfully delivered critical supplies to civilians in Gaza as the temporary ceasefire enters its second week...",
-    imageUrl: "/images/blog/gaza-aid.jpg",
-    category: "world-politics",
-    subcategory: "humanitarian",
-    author: "Tariq Masri",
-    date: "February 22, 2025",
-    readTime: "5 min read",
-    featured: false,
-    subBlog: "palestine"
-  },
-  {
-    id: 9,
-    title: "Major Tech Companies Announce Collaborative Approach to AI Safety",
-    excerpt: "Leading technology firms have formed an unprecedented alliance to address safety and ethical concerns in advanced AI development...",
-    imageUrl: "/images/blog/ai-safety.jpg",
-    category: "science-tech",
-    subcategory: "ai",
-    author: "Jessica Wong",
-    date: "February 21, 2025",
-    readTime: "6 min read",
-    featured: false
-  },
-  {
-    id: 10,
-    title: "Record-Breaking Renewable Energy Adoption in Developing Nations",
-    excerpt: "Several developing countries have surpassed expectations in renewable energy deployment, creating new models for sustainable development...",
-    imageUrl: "/images/blog/renewable-energy.jpg",
-    category: "planet-people",
-    subcategory: "environment",
-    author: "Carlos Mendoza",
-    date: "February 20, 2025",
-    readTime: "5 min read",
-    featured: false
-  },
-  {
-    id: 11,
-    title: "Russian Forces Withdraw from Key Ukrainian Border Region",
-    excerpt: "Strategic redeployment signals a shift in Russian military strategy as international sanctions continue to impact logistics...",
-    imageUrl: "/images/blog/russian-withdrawal.jpg",
-    category: "world-politics",
-    subcategory: "conflict",
-    author: "Viktor Petrov",
-    date: "February 19, 2025",
-    readTime: "7 min read",
-    featured: false,
-    subBlog: "ukraine"
-  },
-  {
-    id: 12,
-    title: "UN Security Council Votes on New Resolution for Gaza Reconstruction",
-    excerpt: "A United Nations resolution for comprehensive rebuilding efforts in Gaza has received widespread support in the Security Council...",
-    imageUrl: "/images/blog/gaza-reconstruction.jpg",
-    category: "world-politics",
-    subcategory: "diplomacy",
-    author: "Layla Hassan",
-    date: "February 18, 2025",
-    readTime: "6 min read",
-    featured: false,
-    subBlog: "palestine"
-  },
-  {
-    id: 13,
-    title: "Global Arts Festival Breaks Attendance Records",
-    excerpt: "The International Arts Festival saw unprecedented attendance this year, with digital participation reaching millions worldwide through innovative virtual exhibits...",
-    imageUrl: "/images/blog/arts-festival.jpg",
-    category: "culture-curiosities",
-    subcategory: "arts",
-    author: "Maria Rodriguez",
-    date: "February 17, 2025",
-    readTime: "5 min read",
-    featured: false
-  },
-  {
-    id: 14,
-    title: "Underground Skateboarding Movement Transforms Urban Spaces",
-    excerpt: "A growing community of urban skateboarders is reimagining city infrastructure, turning forgotten spaces into vibrant cultural hubs...",
-    imageUrl: "/images/blog/skateboarding.jpg",
-    category: "culture-curiosities",
-    subcategory: "subcultures",
-    author: "Tony Park",
-    date: "February 16, 2025",
-    readTime: "4 min read",
-    featured: false
-  },
-  {
-    id: 15,
-    title: "Escalating Tensions: Major Powers Deploy Forces to Contested Region",
-    excerpt: "Military analysts warn of rising risk as rival powers deploy additional battleships and air defense systems to strategic waterways...",
-    imageUrl: "/images/blog/naval-deployment.jpg",
-    category: "wars",
-    subcategory: "military",
-    author: "James Reeves",
-    date: "February 15, 2025",
-    readTime: "6 min read",
-    featured: true
-  }
-];
-
 export default function NewsBlogPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [posts, setPosts] = useState(newsPosts);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const response = await fetch('/api/posts');
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        setPosts([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPosts();
+  }, []);
 
   // Filter posts based on search query and selected category
-  useEffect(() => {
-    let filtered = newsPosts;
-
-    if (searchQuery) {
-      filtered = filtered.filter(post =>
-        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    if (selectedCategory) {
-      filtered = filtered.filter(post => post.category === selectedCategory);
-    }
-
-    setPosts(filtered);
-  }, [searchQuery, selectedCategory]);
+  const filteredPosts = posts.filter(post => {
+    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || post.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   // Get featured posts
-  const featuredPosts = newsPosts.filter(post => post.featured);
+  const featuredPosts = posts.filter(post => post.featured);
 
   // Get posts for each sub-blog
-  const ukrainePosts = newsPosts.filter(post => post.subBlog === "ukraine").slice(0, 3);
-  const palestinePosts = newsPosts.filter(post => post.subBlog === "palestine").slice(0, 3);
+  const ukrainePosts = posts.filter(post => post.subBlog === "ukraine").slice(0, 3);
+  const palestinePosts = posts.filter(post => post.subBlog === "palestine").slice(0, 3);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading news...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -301,8 +144,8 @@ export default function NewsBlogPage() {
         <div className="container mx-auto px-4">
           <div className="flex overflow-x-auto py-4 gap-2 no-scrollbar">
             <button
-              onClick={() => setSelectedCategory("")}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${selectedCategory === ""
+              onClick={() => setSelectedCategory("all")}
+              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${selectedCategory === "all"
                 ? "bg-blue-600 text-white"
                 : "bg-white text-gray-700 hover:bg-gray-200 border border-gray-300"
                 }`}
@@ -329,12 +172,12 @@ export default function NewsBlogPage() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
         {/* Featured Articles */}
-        {featuredPosts.length > 0 && selectedCategory === "" && searchQuery === "" && (
+        {featuredPosts.length > 0 && selectedCategory === "all" && searchQuery === "" && (
           <div className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-gray-900">Featured Stories</h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {featuredPosts.map((post, index) => (
-                <Link href={`/blogs/news/${post.id}`} key={post.id} className="group">
+                <Link href={`/blogs/news/${post.slug}`} key={post.slug} className="group">
                   <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow h-full flex flex-col">
                     <div className="relative h-48 lg:h-56">
                       <div className="absolute inset-0 bg-gray-300 animate-pulse"></div>
@@ -374,7 +217,7 @@ export default function NewsBlogPage() {
         )}
 
         {/* Sub-blogs Section */}
-        {selectedCategory === "" && searchQuery === "" && (
+        {selectedCategory === "all" && searchQuery === "" && (
           <div className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-gray-900">Special Coverage</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -384,7 +227,7 @@ export default function NewsBlogPage() {
                   <div className="flex justify-between items-center">
                     <h3 className="text-2xl font-bold">{subBlogs[0].name}</h3>
                     <span className="text-sm bg-white bg-opacity-20 rounded-full px-3 py-1">
-                      {subBlogs[0].articleCount} articles
+                      {ukrainePosts.length} articles
                     </span>
                   </div>
                   <p className="mt-2 text-white text-opacity-90">{subBlogs[0].description}</p>
@@ -392,8 +235,8 @@ export default function NewsBlogPage() {
                 <div className="p-6 flex-grow">
                   <ul className="space-y-4">
                     {ukrainePosts.map(post => (
-                      <li key={post.id}>
-                        <Link href={`/blogs/news/${post.id}`} className="flex space-x-3 group">
+                      <li key={post.slug}>
+                        <Link href={`/blogs/news/${post.slug}`} className="flex space-x-3 group">
                           <div className="relative h-16 w-16 flex-shrink-0 rounded overflow-hidden">
                             <div className="absolute inset-0 bg-gray-300 animate-pulse"></div>
                             {/* Replace with actual image when available */}
@@ -432,7 +275,7 @@ export default function NewsBlogPage() {
                   <div className="flex justify-between items-center">
                     <h3 className="text-2xl font-bold">{subBlogs[1].name}</h3>
                     <span className="text-sm bg-white bg-opacity-20 rounded-full px-3 py-1">
-                      {subBlogs[1].articleCount} articles
+                      {palestinePosts.length} articles
                     </span>
                   </div>
                   <p className="mt-2 text-white text-opacity-90">{subBlogs[1].description}</p>
@@ -440,8 +283,8 @@ export default function NewsBlogPage() {
                 <div className="p-6 flex-grow">
                   <ul className="space-y-4">
                     {palestinePosts.map(post => (
-                      <li key={post.id}>
-                        <Link href={`/blogs/news/${post.id}`} className="flex space-x-3 group">
+                      <li key={post.slug}>
+                        <Link href={`/blogs/news/${post.slug}`} className="flex space-x-3 group">
                           <div className="relative h-16 w-16 flex-shrink-0 rounded overflow-hidden">
                             <div className="absolute inset-0 bg-gray-300 animate-pulse"></div>
                             {/* Replace with actual image when available */}
@@ -607,11 +450,11 @@ export default function NewsBlogPage() {
             }
           </h2>
 
-          {posts.length === 0 ? (
+          {filteredPosts.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-xl text-gray-600 mb-4">No articles found matching your search.</p>
               <button
-                onClick={() => { setSearchQuery(""); setSelectedCategory(""); }}
+                onClick={() => { setSearchQuery(""); setSelectedCategory("all"); }}
                 className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 View all articles
@@ -619,8 +462,8 @@ export default function NewsBlogPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map(post => (
-                <Link href={`/blogs/news/${post.id}`} key={post.id} className="group">
+              {filteredPosts.map(post => (
+                <Link href={`/blogs/news/${post.slug}`} key={post.slug} className="group">
                   <div className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow h-full flex flex-col">
                     <div className="relative h-48">
                       <div className="absolute inset-0 bg-gray-300 animate-pulse"></div>
@@ -666,7 +509,7 @@ export default function NewsBlogPage() {
           )}
 
           {/* Pagination */}
-          {posts.length > 0 && (
+          {filteredPosts.length > 0 && (
             <div className="mt-12 flex justify-center">
               <nav className="flex items-center gap-1">
                 <button className="px-3 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors">Previous</button>

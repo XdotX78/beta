@@ -61,22 +61,25 @@ function getMysteryPosts(): Post[] {
 }
 
 // Mystery categories with icons and descriptions
-const categories = [
-  { name: "Ancient Mysteries", slug: "ancient-mysteries", count: 42 },
-  { name: "Unexplained Phenomena", slug: "unexplained-phenomena", count: 38 },
-  { name: "Cryptids & Legends", slug: "cryptids", count: 27 },
-  { name: "Paranormal", slug: "paranormal", count: 31 },
-  { name: "Conspiracy Theories", slug: "conspiracy", count: 24 },
-  { name: "Historical Enigmas", slug: "historical", count: 35 },
+const mainCategories = [
+  { name: "UFO & Alien Encounters", slug: "ufo-alien-encounters" },
+  { name: "Serial Killers & True Crime", slug: "serial-killers-true-crime" },
+  { name: "Paranormal Activity", slug: "paranormal-activity" },
+  { name: "Unexplained Disappearances", slug: "unexplained-disappearances" },
+  { name: "Ancient Mysteries", slug: "ancient-mysteries" }
 ];
 
 export default function MysteriesBlogPage() {
   const posts = getMysteryPosts(); // Fetch posts on the server
 
-  // TODO: Re-implement search/filtering. 
-  // For server components, filtering usually happens based on searchParams 
-  // or requires a client component wrapper for interactive state.
-  // For simplicity, showing all posts for now.
+  // Get post count for each category
+  const categoryCount = mainCategories.map(cat => ({
+    ...cat,
+    count: posts.filter(post =>
+      post.frontmatter.tags?.includes(cat.name)
+    ).length
+  }));
+
   const filteredPosts = posts;
   const featuredPosts = posts.filter(post => post.frontmatter.featured);
 
@@ -234,8 +237,7 @@ export default function MysteriesBlogPage() {
               <ul className="space-y-3">
                 <li>
                   <button
-                    className={`w-full text-left px-3 py-2 rounded transition-colors flex justify-between items-center bg-gray-700 text-gray-300" 
-                      }`}
+                    className="w-full text-left px-3 py-2 rounded transition-colors flex justify-between items-center bg-gray-700 text-gray-300"
                   >
                     <span>All Categories</span>
                     <span className="text-sm bg-gray-600 px-2 py-0.5 rounded-full">
@@ -243,15 +245,14 @@ export default function MysteriesBlogPage() {
                     </span>
                   </button>
                 </li>
-                {[...new Set(posts.flatMap(p => p.frontmatter.tags || []))].map(tag => (
-                  <li key={tag}>
+                {categoryCount.map(category => (
+                  <li key={category.slug}>
                     <button
-                      className={`w-full text-left px-3 py-2 rounded transition-colors flex justify-between items-center text-gray-300 hover:bg-gray-700"
-                      }`}
+                      className="w-full text-left px-3 py-2 rounded transition-colors flex justify-between items-center text-gray-300 hover:bg-gray-700"
                     >
-                      <span>{tag}</span>
-                      <span className="text-sm bg-gray-700 px-2 py-0.5 rounded-full">
-                        {posts.filter(p => p.frontmatter.tags?.includes(tag)).length}
+                      <span>{category.name}</span>
+                      <span className="text-sm bg-gray-600 px-2 py-0.5 rounded-full">
+                        {category.count}
                       </span>
                     </button>
                   </li>

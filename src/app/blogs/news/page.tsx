@@ -44,6 +44,76 @@ const subBlogs = [
     description: "Updates on the humanitarian situation and peace efforts in Gaza",
     imageUrl: "/images/blog/palestine.jpg",
     color: "from-green-700 to-red-600 to-black",
+  },
+  {
+    id: "taiwan",
+    name: "Taiwan Situation",
+    description: "Coverage of geopolitical tensions and developments in the Taiwan Strait",
+    imageUrl: "/images/blog/taiwan.jpg",
+    color: "from-red-600 to-blue-600",
+  },
+  {
+    id: "south-africa",
+    name: "South Africa Crisis",
+    description: "Coverage of economic challenges, social unrest, and political developments in South Africa",
+    imageUrl: "/images/blog/south-africa.jpg",
+    color: "from-green-600 via-yellow-500 to-red-600",
+  },
+  {
+    id: "yemen",
+    name: "Yemen Conflict",
+    description: "Coverage of the humanitarian crisis, conflict developments, and peace initiatives in Yemen",
+    imageUrl: "/images/blog/yemen.jpg",
+    color: "from-red-700 to-white to-black",
+  },
+  {
+    id: "sudan",
+    name: "Sudan Crisis",
+    description: "Coverage of the civil war, humanitarian emergency, and regional impact in Sudan",
+    imageUrl: "/images/blog/sudan.jpg",
+    color: "from-red-600 via-white to-blue-600",
+  },
+  {
+    id: "haiti",
+    name: "Haiti Crisis",
+    description: "Coverage of political instability, gang violence, and humanitarian emergency in Haiti",
+    imageUrl: "/images/blog/haiti.jpg",
+    color: "from-blue-600 via-red-600 to-black",
+  },
+  {
+    id: "drc",
+    name: "DR Congo Crisis",
+    description: "Coverage of armed conflicts, humanitarian crisis, and resource-driven tensions in the DRC",
+    imageUrl: "/images/blog/drc.jpg",
+    color: "from-blue-700 via-yellow-500 to-red-600",
+  },
+  {
+    id: "myanmar",
+    name: "Myanmar Crisis",
+    description: "Coverage of civil war, resistance against military junta, and humanitarian situation in Myanmar",
+    imageUrl: "/images/blog/myanmar.jpg",
+    color: "from-yellow-500 via-green-600 to-red-500",
+  },
+  {
+    id: "sahel",
+    name: "Sahel Crisis",
+    description: "Coverage of regional instability, jihadist insurgencies, and humanitarian challenges in the Sahel",
+    imageUrl: "/images/blog/sahel.jpg",
+    color: "from-yellow-600 via-green-700 to-red-700",
+  },
+  {
+    id: "kashmir",
+    name: "Kashmir Dispute",
+    description: "Coverage of territorial conflict, regional tensions, and humanitarian impact in Kashmir",
+    imageUrl: "/images/blog/kashmir.jpg",
+    color: "from-green-700 via-white to-orange-600",
+  },
+  {
+    id: "afghanistan",
+    name: "Afghanistan Crisis",
+    description: "Coverage of humanitarian emergency, women's rights, and security challenges in Afghanistan",
+    imageUrl: "/images/blog/afghanistan.jpg",
+    color: "from-black via-red-600 to-green-600",
   }
 ];
 
@@ -52,6 +122,7 @@ export default function NewsBlogPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentSpecialIndex, setCurrentSpecialIndex] = useState(0);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -84,6 +155,16 @@ export default function NewsBlogPage() {
   // Get posts for each sub-blog
   const ukrainePosts = posts.filter(post => post.subBlog === "ukraine").slice(0, 3);
   const palestinePosts = posts.filter(post => post.subBlog === "palestine").slice(0, 3);
+  const taiwanPosts = posts.filter(post => post.subBlog === "taiwan").slice(0, 3);
+  const southAfricaPosts = posts.filter(post => post.subBlog === "south-africa").slice(0, 3);
+  const yemenPosts = posts.filter(post => post.subBlog === "yemen").slice(0, 3);
+  const sudanPosts = posts.filter(post => post.subBlog === "sudan").slice(0, 3);
+  const haitiPosts = posts.filter(post => post.subBlog === "haiti").slice(0, 3);
+  const drcPosts = posts.filter(post => post.subBlog === "drc").slice(0, 3);
+  const myanmarPosts = posts.filter(post => post.subBlog === "myanmar").slice(0, 3);
+  const sahelPosts = posts.filter(post => post.subBlog === "sahel").slice(0, 3);
+  const kashmirPosts = posts.filter(post => post.subBlog === "kashmir").slice(0, 3);
+  const afghanistanPosts = posts.filter(post => post.subBlog === "afghanistan").slice(0, 3);
 
   if (loading) {
     return (
@@ -171,6 +252,106 @@ export default function NewsBlogPage() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
+        {/* Sub-blogs Section */}
+        {selectedCategory === "all" && searchQuery === "" && (
+          <div className="mb-16">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-900">Special Coverage</h2>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setCurrentSpecialIndex(prev => Math.max(0, prev - 1))}
+                  disabled={currentSpecialIndex === 0}
+                  className={`p-2 rounded-full ${currentSpecialIndex === 0 ? 'text-gray-400 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
+                  aria-label="Previous coverage"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setCurrentSpecialIndex(prev => Math.min(subBlogs.length - 2, prev + 1))}
+                  disabled={currentSpecialIndex >= subBlogs.length - 2}
+                  className={`p-2 rounded-full ${currentSpecialIndex >= subBlogs.length - 2 ? 'text-gray-400 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
+                  aria-label="Next coverage"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {subBlogs.slice(currentSpecialIndex, currentSpecialIndex + 2).map((subBlog, index) => {
+                const posts = subBlog.id === "ukraine"
+                  ? ukrainePosts
+                  : subBlog.id === "palestine"
+                    ? palestinePosts
+                    : subBlog.id === "taiwan"
+                      ? taiwanPosts
+                      : subBlog.id === "south-africa"
+                        ? southAfricaPosts
+                        : subBlog.id === "yemen"
+                          ? yemenPosts
+                          : subBlog.id === "sudan"
+                            ? sudanPosts
+                            : subBlog.id === "haiti"
+                              ? haitiPosts
+                              : subBlog.id === "drc"
+                                ? drcPosts
+                                : subBlog.id === "myanmar"
+                                  ? myanmarPosts
+                                  : subBlog.id === "sahel"
+                                    ? sahelPosts
+                                    : subBlog.id === "kashmir"
+                                      ? kashmirPosts
+                                      : afghanistanPosts;
+
+                return (
+                  <div key={subBlog.id} className="rounded-xl overflow-hidden shadow-lg bg-white flex flex-col">
+                    <div className={`p-6 bg-gradient-to-r ${subBlog.color} text-white`}>
+                      <div className="flex justify-between items-center">
+                        <h3 className="text-2xl font-bold">{subBlog.name}</h3>
+                        <span className="text-sm bg-white bg-opacity-20 rounded-full px-3 py-1">
+                          {posts.length} articles
+                        </span>
+                      </div>
+                      <p className="mt-2 text-white text-opacity-90">{subBlog.description}</p>
+                    </div>
+                    <div className="p-6 flex-grow">
+                      <ul className="space-y-4">
+                        {posts.map(post => (
+                          <li key={post.slug}>
+                            <Link href={`/blogs/news/${post.slug}`} className="flex space-x-3 group">
+                              <div className="relative h-16 w-16 flex-shrink-0 rounded overflow-hidden">
+                                <div className="absolute inset-0 bg-gray-300 animate-pulse"></div>
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                  {post.title}
+                                </h4>
+                                <div className="flex items-center mt-1">
+                                  <FaCalendarAlt className="text-gray-500 mr-1" size={10} />
+                                  <span className="text-xs text-gray-500">{post.date}</span>
+                                </div>
+                              </div>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-4 pt-4 border-t border-gray-200">
+                        <Link href={`/blogs/news/${subBlog.id}`} className="text-blue-600 hover:text-blue-800 font-medium flex items-center">
+                          View all {subBlog.name} coverage
+                          <FaArrowRight className="ml-2" size={12} />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Featured Articles */}
         {featuredPosts.length > 0 && selectedCategory === "all" && searchQuery === "" && (
           <div className="mb-16">
@@ -212,110 +393,6 @@ export default function NewsBlogPage() {
                   </div>
                 </Link>
               ))}
-            </div>
-          </div>
-        )}
-
-        {/* Sub-blogs Section */}
-        {selectedCategory === "all" && searchQuery === "" && (
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-gray-900">Special Coverage</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Ukraine Sub-blog */}
-              <div className="rounded-xl overflow-hidden shadow-lg bg-white flex flex-col">
-                <div className={`p-6 bg-gradient-to-r ${subBlogs[0].color} text-white`}>
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-2xl font-bold">{subBlogs[0].name}</h3>
-                    <span className="text-sm bg-white bg-opacity-20 rounded-full px-3 py-1">
-                      {ukrainePosts.length} articles
-                    </span>
-                  </div>
-                  <p className="mt-2 text-white text-opacity-90">{subBlogs[0].description}</p>
-                </div>
-                <div className="p-6 flex-grow">
-                  <ul className="space-y-4">
-                    {ukrainePosts.map(post => (
-                      <li key={post.slug}>
-                        <Link href={`/blogs/news/${post.slug}`} className="flex space-x-3 group">
-                          <div className="relative h-16 w-16 flex-shrink-0 rounded overflow-hidden">
-                            <div className="absolute inset-0 bg-gray-300 animate-pulse"></div>
-                            {/* Replace with actual image when available */}
-                            {/* <Image 
-                              src={post.imageUrl}
-                              alt={post.title}
-                              fill
-                              className="object-cover"
-                            /> */}
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                              {post.title}
-                            </h4>
-                            <div className="flex items-center mt-1">
-                              <FaCalendarAlt className="text-gray-500 mr-1" size={10} />
-                              <span className="text-xs text-gray-500">{post.date}</span>
-                            </div>
-                          </div>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-4 pt-4 border-t border-gray-200">
-                    <Link href="/blogs/news/ukraine" className="text-blue-600 hover:text-blue-800 font-medium flex items-center">
-                      View all Ukraine coverage
-                      <FaArrowRight className="ml-2" size={12} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
-              {/* Palestine Sub-blog */}
-              <div className="rounded-xl overflow-hidden shadow-lg bg-white flex flex-col">
-                <div className={`p-6 bg-gradient-to-r ${subBlogs[1].color} text-white`}>
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-2xl font-bold">{subBlogs[1].name}</h3>
-                    <span className="text-sm bg-white bg-opacity-20 rounded-full px-3 py-1">
-                      {palestinePosts.length} articles
-                    </span>
-                  </div>
-                  <p className="mt-2 text-white text-opacity-90">{subBlogs[1].description}</p>
-                </div>
-                <div className="p-6 flex-grow">
-                  <ul className="space-y-4">
-                    {palestinePosts.map(post => (
-                      <li key={post.slug}>
-                        <Link href={`/blogs/news/${post.slug}`} className="flex space-x-3 group">
-                          <div className="relative h-16 w-16 flex-shrink-0 rounded overflow-hidden">
-                            <div className="absolute inset-0 bg-gray-300 animate-pulse"></div>
-                            {/* Replace with actual image when available */}
-                            {/* <Image 
-                              src={post.imageUrl}
-                              alt={post.title}
-                              fill
-                              className="object-cover"
-                            /> */}
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                              {post.title}
-                            </h4>
-                            <div className="flex items-center mt-1">
-                              <FaCalendarAlt className="text-gray-500 mr-1" size={10} />
-                              <span className="text-xs text-gray-500">{post.date}</span>
-                            </div>
-                          </div>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-4 pt-4 border-t border-gray-200">
-                    <Link href="/blogs/news/palestine" className="text-blue-600 hover:text-blue-800 font-medium flex items-center">
-                      View all Palestine coverage
-                      <FaArrowRight className="ml-2" size={12} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         )}

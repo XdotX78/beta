@@ -1,0 +1,153 @@
+[33mcommit 6fc30b1a4a7fed048fcec612f1bed5d6012b9ed0[m
+Author: Gaia Explorer <user@example.com>
+Date:   Sun Apr 6 20:02:24 2025 +0200
+
+    Final code updates: Fix ESLint issues, improve categorization, add sample news data for conflicts
+
+[1mdiff --git a/src/app/blogs/news/page.tsx b/src/app/blogs/news/page.tsx[m
+[1mnew file mode 100644[m
+[1mindex 0000000..49982aa[m
+[1m--- /dev/null[m
+[1m+++ b/src/app/blogs/news/page.tsx[m
+[36m@@ -0,0 +1,736 @@[m
+[32m+[m[32m"use client";[m
+[32m+[m
+[32m+[m[32mimport { useState, useEffect } from "react";[m
+[32m+[m[32mimport Link from "next/link";[m
+[32m+[m[32mimport Image from "next/image";[m
+[32m+[m[32mimport { motion } from "framer-motion";[m
+[32m+[m[32mimport { FaSearch, FaCalendarAlt, FaUser, FaArrowRight, FaGlobe, FaTag } from "react-icons/fa";[m
+[32m+[m
+[32m+[m[32m// Sample news categories with their counts and colors[m
+[32m+[m[32mconst newsCategories = [[m
+[32m+[m[32m  { id: "world-politics", name: "World & Politics", count: 124, color: "bg-blue-600", icon: "📰" },[m
+[32m+[m[32m  { id: "wars", name: "WARS", count: 62, color: "bg-red-600", icon: "⚔️" },[m
+[32m+[m[32m  { id: "science-tech", name: "Science & Tech", count: 87, color: "bg-purple-600", icon: "🧠" },[m
+[32m+[m[32m  { id: "planet-people", name: "Planet & People", count: 65, color: "bg-green-600", icon: "🌿" },[m
+[32m+[m[32m  { id: "culture-curiosities", name: "Culture & Curiosities", count: 43, color: "bg-pink-600", icon: "🎭" },[m
+[32m+[m[32m];[m
+[32m+[m
+[32m+[m[32m// Sub-blogs data[m
+[32m+[m[32mconst subBlogs = [[m
+[32m+[m[32m  {[m
+[32m+[m[32m    id: "ukraine",[m
+[32m+[m[32m    name: "Ukraine Conflict",[m
+[32m+[m[32m    description: "Ongoing coverage of the Ukraine-Russia war and its global impact",[m
+[32m+[m[32m    articleCount: 47,[m
+[32m+[m[32m    imageUrl: "/images/blog/ukraine.jpg",[m
+[32m+[m[32m    color: "from-blue-700 to-yellow-500",[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    id: "palestine",[m
+[32m+[m[32m    name: "Palestine Crisis",[m
+[32m+[m[32m    description: "Updates on the humanitarian situation and peace efforts in Gaza",[m
+[32m+[m[32m    articleCount: 39,[m
+[32m+[m[32m    imageUrl: "/images/blog/palestine.jpg",[m
+[32m+[m[32m    color: "from-green-700 to-red-600 to-black",[m
+[32m+[m[32m  }[m
+[32m+[m[32m];[m
+[32m+[m
+[32m+[m[32m// Sample news blog posts data[m
+[32m+[m[32mconst newsPosts = [[m
+[32m+[m[32m  {[m
+[32m+[m[32m    id: 1,[m
+[32m+[m[32m    title: "Global Summit on Climate Change Reaches Historic Agreement",[m
+[32m+[m[32m    excerpt: "World leaders have committed to ambitious new targets for carbon reduction, marking a turning point in international climate policy...",[m
+[32m+[m[32m    imageUrl: "/images/blog/climate-summit.jpg",[m
+[32m+[m[32m    category: "world-politics",[m
+[32m+[m[32m    subcategory: "diplomacy",[m
+[32m+[m[32m    author: "Sarah Johnson",[m
+[32m+[m[32m    date: "March 1, 2025",[m
+[32m+[m[32m    readTime: "5 min read",[m
+[32m+[m[32m    featured: true[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    id: 2,[m
+[32m+[m[32m    title: "Breakthrough in Quantum Computing Challenges Encryption Standards",[m
+[32m+[m[32m    excerpt: "Researchers have achieved quantum supremacy in a new domain, raising urgent questions about the security of current encryption methods...",[m
+[32m+[m[32m    imageUrl: "/images/blog/quantum-computing.jpg",[m
+[32m+[m[32m    category: "science-tech",[m
+[32m+[m[32m    subcategory: "innovation",[m
+[32m+[m[32m    author: "Dr. Michael Chen",[m
+[32m+[m[32m    date: "February 28, 2025",[m
+[32m+[m[32m    readTime: "7 min read",[m
+[32m+[m[32m    featured: true[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    id: 3,[m
+[32m+[m[32m    title: "Market Volatility Continues as Central Banks Adjust Policies",[m
+[32m+[m[32m    excerpt: "Global markets reacted sharply to unexpected policy shifts from major central banks, with tech stocks experiencing significant fluctuations...",[m
+[32m+[m[32m    imageUrl: "/images/blog/market-volatility.jpg",[m
+[32m+[m[32m    category: "world-politics",[m
+[32m+[m[32m    subcategory: "economy",[m
+[32m+[m[32m    author: "Robert Kumar",[m
+[32m+[m[32m    date: "February 27, 2025",[m
+[32m+[m[32m    readTime: "4 min read",[m
+[32m+[m[32m    featured: true[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    id: 4,[m
+[32m+[m[32m    title: "New Research Challenges Understanding of Dark Matter",[m
+[32m+[m[32m    excerpt: "Astronomical observations from the James Webb Space Telescope have led scientists to reconsider fundamental theories about dark matter...",[m
+[32m+[m[32m    imageUrl: "/images/blog/dark-matter.jpg",[m
+[32m+[m[32m    category: "science-tech",[m
+[32m+[m[32m    subcategory: "space",[m
+[32m+[m[32m    author: "Dr. Elena Vasquez",[m
+[32m+[m[32m    date: "February 26, 2025",[m
+[32m+[m[32m    readTime: "6 min read",[m
+[32m+[m[32m    featured: false[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    id: 5,[m
+[32m+[m[32m    title: "EU Passes Landmark Digital Rights Legislation",[m
+[32m+[m[32m    excerpt: "The European Union has approved comprehensive new laws governing AI, data protection, and online content moderation...",[m
+[32m+[m[32m    imageUrl: "/images/blog/eu-legislation.jpg",[m
+[32m+[m[32m    category: "world-politics",[m
+[32m+[m[32m    subcategory: "policy",[m
+[32m+[m[32m    author: "Hans Müller",[m
+[32m+[m[32m    date: "February 25, 2025",[m
+[32m+[m[32m    readTime: "5 min read",[m
+[32m+[m[32m    featured: false[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    id: 6,[m
+[32m+[m[32m    title: "Breakthrough Treatment Shows Promise for Alzheimer's Disease",[m
+[32m+[m[32m    excerpt: "Clinical trials of a novel immunotherapy approach have demonstrated significant cognitive improvements in early-stage Alzheimer's patients...",[m
+[32m+[m[32m    imageUrl: "/images/blog/alzheimers-research.jpg",[m
+[32m+[m[32m    category: "planet-people",[m
+[32m+[m[32m    subcategory: "health",[m
+[32m+[m[32m    author: "Dr. James Wilson",[m
+[32m+[m[32m    date: "February 24, 2025",[m
+[32m+[m[32m    readTime: "8 min read",[m
+[32m+[m[32m    featured: false[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    id: 7,[m
+[32m+[m[32m    title: "Ukraine Peace Talks Resume After Military Stalemate",[m
+[32m+[m[32m    excerpt: "Diplomatic negotiations have restarted following a prolonged stalemate on the eastern front, with cautious optimism from international observers...",[m
+[32m+[m[32m    imageUrl: "/images/blog/ukraine-talks.jpg",[m
+[32m+[m[32m    category: "world-politics",[m
+[32m+[m[32m    subcategory: "conflict",[m
+[32m+[m[32m    author: "Olena Kovalenko",[m
+[32m+[m[32m    date: "February 23, 2025",[m
+[32m+[m[32m    readTime: "6 min read",[m
+[32m+[m[32m    featured: false,[m
+[32m+[m[32m    subBlog: "ukraine"[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    id: 8,[m
+[32m+[m[32m    title: "Humanitarian Aid Reaches Gaza as Ceasefire Holds",[m
+[32m+[m[32m    excerpt: "Aid convoys have successfully delivered critical supplies to civilians in Gaza as the temporary ceasefire enters its second week...",[m
+[32m+[m[32m    imageUrl: "/images/blog/gaza-aid.jpg",[m
+[32m+[m[32m    category: "world-politics",[m
+[32m+[m[32m    subcategory: "humanitarian",[m
+[32m+[m[32m    author: "Tariq Masri",[m
+[32m+[m[32m    date: "February 22, 2025",[m
+[32m+[m[32m    readTime: "5 min read",[m
+[32m+[m[32m    featured: false,[m
+[32m+[m[32m    subBlog: "palestine"[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    id: 9,[m
+[32m+[m[32m    title: "Major Tech Companies Announce Collaborative Approach to AI Safety",[m
+[32m+[m[32m    excerpt: "Leading technology firms have formed an unprecedented alliance to address safety and ethical

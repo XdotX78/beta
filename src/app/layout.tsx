@@ -2,6 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import MainNavigation from "./components/MainNavigation";
+import CookieConsent from "./components/CookieConsent";
+import Footer from "./components/layout/Footer";
 import "./fonts.css";
 
 
@@ -29,6 +31,8 @@ export default function RootLayout({
         <div className="flex flex-col min-h-screen">
           <MainNavigation />
           <main className="flex-grow relative z-10">{children}</main>
+          <Footer />
+          <CookieConsent />
         </div>
       </body>
     </html>

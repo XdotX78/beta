@@ -1,0 +1,57 @@
+export enum SecurityEventType {
+    // Authentication events
+    LOGIN_SUCCESS = 'LOGIN_SUCCESS',
+    LOGIN_FAILURE = 'LOGIN_FAILURE',
+    LOGOUT = 'LOGOUT',
+    PASSWORD_CHANGED = 'PASSWORD_CHANGED',
+    PASSWORD_CHANGE_ERROR = 'PASSWORD_CHANGE_ERROR',
+    INVALID_CURRENT_PASSWORD = 'INVALID_CURRENT_PASSWORD',
+    UNAUTHORIZED_PASSWORD_CHANGE = 'UNAUTHORIZED_PASSWORD_CHANGE',
+    INVALID_PASSWORD_FORMAT = 'INVALID_PASSWORD_FORMAT',
+
+    // Session events
+    SESSION_CREATED = 'SESSION_CREATED',
+    SESSION_EXPIRED = 'SESSION_EXPIRED',
+    SESSION_INVALIDATED = 'SESSION_INVALIDATED',
+
+    // Token events
+    TOKEN_CREATED = 'TOKEN_CREATED',
+    TOKEN_REFRESHED = 'TOKEN_REFRESHED',
+    TOKEN_BLACKLISTED = 'TOKEN_BLACKLISTED',
+    INVALID_TOKEN = 'INVALID_TOKEN',
+
+    // 2FA events
+    TWO_FA_ENABLED = 'TWO_FA_ENABLED',
+    TWO_FA_DISABLED = 'TWO_FA_DISABLED',
+    TWO_FA_VERIFIED = 'TWO_FA_VERIFIED',
+    TWO_FA_FAILED = 'TWO_FA_FAILED',
+
+    // Security questions events
+    SECURITY_QUESTIONS_SET = 'SECURITY_QUESTIONS_SET',
+    SECURITY_QUESTIONS_VERIFIED = 'SECURITY_QUESTIONS_VERIFIED',
+    SECURITY_QUESTIONS_FAILED = 'SECURITY_QUESTIONS_FAILED',
+
+    // General security events
+    RATE_LIMIT_EXCEEDED = 'RATE_LIMIT_EXCEEDED',
+    INVALID_REQUEST = 'INVALID_REQUEST',
+    USER_NOT_FOUND = 'USER_NOT_FOUND',
+    UNAUTHORIZED_ACCESS = 'UNAUTHORIZED_ACCESS'
+}
+
+export enum SecurityEventSeverity {
+    LOW = 'LOW',
+    MEDIUM = 'MEDIUM',
+    HIGH = 'HIGH',
+    CRITICAL = 'CRITICAL'
+}
+
+export interface SecurityEvent {
+    type: SecurityEventType;
+    severity: SecurityEventSeverity;
+    timestamp?: Date;
+    ip: string;
+    userAgent: string;
+    userId: string | null;
+    details: string;
+    metadata?: Record<string, any>;
+} 

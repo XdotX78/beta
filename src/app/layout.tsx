@@ -5,6 +5,7 @@ import MainNavigation from "./components/MainNavigation";
 import CookieConsent from "./components/CookieConsent";
 import Footer from "./components/layout/Footer";
 import "./fonts.css";
+import { Providers } from './providers';
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,12 +29,14 @@ export default function RootLayout({
       <head>
       </head>
       <body className={inter.className}>
-        <div className="flex flex-col min-h-screen">
-          <MainNavigation />
-          <main className="flex-grow relative z-10">{children}</main>
-          <Footer />
-          <CookieConsent />
-        </div>
+        <Providers>
+          <div className="flex flex-col min-h-screen">
+            <MainNavigation />
+            <main className="flex-grow relative z-10">{children}</main>
+            <Footer />
+            <CookieConsent />
+          </div>
+        </Providers>
       </body>
     </html>
   );

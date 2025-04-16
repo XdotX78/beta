@@ -82,16 +82,24 @@ export default function MainNavigation() {
                 <FaSearch />
               </button>
 
-              {/* Login/User Button - styled differently */}
-              <Link
-                href="/login"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center transition-colors duration-200"
-              >
-                {pathname.startsWith('/user') ?
-                  <><FaUser className="mr-2" />Profile</> :
-                  <><FaSignInAlt className="mr-2" />Login</>
-                }
-              </Link>
+              {/* Auth Buttons - styled differently */}
+              <div className="flex space-x-2">
+                <Link
+                  href="/auth/signup"
+                  className="bg-transparent border-2 border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-md text-sm font-medium flex items-center transition-colors duration-200"
+                >
+                  Sign Up
+                </Link>
+                <Link
+                  href="/auth/signin"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center transition-colors duration-200"
+                >
+                  {pathname.startsWith('/user') ?
+                    <><FaUser className="mr-2" />Profile</> :
+                    <><FaSignInAlt className="mr-2" />Login</>
+                  }
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -124,9 +132,16 @@ export default function MainNavigation() {
               Search
             </Link>
 
-            {/* Login in mobile menu */}
+            {/* Auth buttons in mobile menu */}
             <Link
-              href="/login"
+              href="/auth/signup"
+              className="block px-3 py-2 rounded-md text-base font-medium flex items-center border-2 border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Sign Up
+            </Link>
+            <Link
+              href="/auth/signin"
               className="block px-3 py-2 rounded-md text-base font-medium flex items-center bg-blue-600 text-white"
               onClick={() => setIsMenuOpen(false)}
             >
